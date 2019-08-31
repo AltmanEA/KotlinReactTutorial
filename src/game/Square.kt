@@ -1,20 +1,29 @@
 package game
 
-import react.RBuilder
-import react.RComponent
-import react.RProps
-import react.RState
+import kotlinx.html.js.onClickFunction
+import org.w3c.dom.events.Event
+import react.*
 import react.dom.button
 
-class Square():RComponent<Square.Props, RState>() {
+class Square():RComponent<Square.Props, Square.State>() {
 
     interface Props: RProps {
         var squares:String?
     }
+    interface State: RState {
+        var value:String?
+    }
+
+    val onClick: (event:Event)->Unit = {
+        setState{
+            state.value = "X"
+        }
+    }
 
     override fun RBuilder.render() {
         button(classes = "square") {
-            +(props.squares?:"")
+            +(state.value ?:"")
+            attrs.onClickFunction = onClick
         }
     }
 }
