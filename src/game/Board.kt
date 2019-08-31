@@ -9,7 +9,7 @@ import react.dom.div
 class Board: RComponent<RProps, RState>() {
     val status = "Next player: X"
     fun RBuilder.renderSquare(i: Int) {
-        square()
+        square(i.toString())
     }
 
     override fun RBuilder.render() {
