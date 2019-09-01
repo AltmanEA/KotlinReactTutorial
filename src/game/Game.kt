@@ -14,12 +14,14 @@ class Game(): RComponent<RProps, Game.State>() {
             history = mutableListOf(
                     HistoryEntry(Array<Char>(9) { ' ' })
             )
+            stepNumber = 0
             xIsNext = true
         }
     }
 
     interface State: RState {
         var history: List<HistoryEntry>
+        var stepNumber:Int
         var xIsNext: Boolean
     }
 
@@ -44,7 +46,7 @@ class Game(): RComponent<RProps, Game.State>() {
     }
 
     private fun handleClick(i: Int) {
-        var tmpHistory = state.history
+        var tmpHistory = state.history.slice(0..state.stepNumber)
         val current = tmpHistory.last()
         val squares = current.squares.copyOf()
         if (calculateWinner(squares) != ' ' ||
@@ -54,16 +56,21 @@ class Game(): RComponent<RProps, Game.State>() {
         tmpHistory += HistoryEntry(squares)
         setState{
             history = tmpHistory
+            stepNumber = tmpHistory.size - 1
             xIsNext = !xIsNext
         }
     }
 
-    private fun jumpTo(step: Int) {
-    }
+    private fun jumpTo(step: Int) =
+            setState {
+                stepNumber = step
+                xIsNext = (step % 2) == 0
+            }
+
 
     override fun RBuilder.render() {
         val history = state.history
-        val current = history.last()
+        val current = history[state.stepNumber]
         val winner = calculateWinner(current.squares)
 
         val status =
@@ -86,6 +93,7 @@ class Game(): RComponent<RProps, Game.State>() {
                                 else
                                     "Go to game start"
                         li {
+                            key = move.toString()
                             button {
                                 +desc
                                 attrs.onClickFunction = { jumpTo(step) }
