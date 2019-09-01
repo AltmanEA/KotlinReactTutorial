@@ -1,7 +1,12 @@
 package game
 
+import kotlinx.html.ButtonType
+import kotlinx.html.js.onClickFunction
 import react.*
 import react.dom.div
+import react.dom.li
+import react.dom.button
+import react.dom.ol
 
 class Game(): RComponent<RProps, Game.State>() {
     init {
@@ -53,10 +58,14 @@ class Game(): RComponent<RProps, Game.State>() {
         }
     }
 
+    private fun jumpTo(step: Int) {
+    }
+
     override fun RBuilder.render() {
         val history = state.history
         val current = history.last()
         val winner = calculateWinner(current.squares)
+
         val status =
                 if (winner != ' ')
                     "Winner: $winner"
@@ -69,7 +78,21 @@ class Game(): RComponent<RProps, Game.State>() {
             }
             div(classes = "game-info") {
                 div { +status }
-                // TO DO
+                ol {
+                    history.mapIndexed { step, move ->
+                        val desc =
+                                if (step != 0)
+                                    "Go to move #$step"
+                                else
+                                    "Go to game start"
+                        li {
+                            button {
+                                +desc
+                                attrs.onClickFunction = { jumpTo(step) }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
