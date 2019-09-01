@@ -1,9 +1,6 @@
 package game
 
-import react.RBuilder
-import react.RComponent
-import react.RProps
-import react.RState
+import react.*
 import react.dom.div
 
 class Board: RComponent<RProps, Board.State>() {
@@ -16,9 +13,17 @@ class Board: RComponent<RProps, Board.State>() {
         var squares: Array<Char>
     }
 
+    fun handleClick(i: Int) {
+        val tmp = state.squares.copyOf()
+        tmp[i]='X'
+        setState{
+            squares = tmp
+        }
+    }
+
     val status = "Next player: X"
     fun RBuilder.renderSquare(i: Int) {
-        square(state.squares[i])
+        square(state.squares[i], {handleClick(i)})
     }
 
     override fun RBuilder.render() {

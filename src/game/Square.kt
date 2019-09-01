@@ -5,29 +5,22 @@ import org.w3c.dom.events.Event
 import react.*
 import react.dom.button
 
-class Square():RComponent<Square.Props, Square.State>() {
+class Square():RComponent<Square.Props, RState>() {
 
     interface Props: RProps {
         var squares:Char
-    }
-    interface State: RState {
-        var value:String?
-    }
-
-    val onClick: (event:Event)->Unit = {
-        setState{
-            state.value = "X"
-        }
+        var onClick: (Event) -> Unit
     }
 
     override fun RBuilder.render() {
         button(classes = "square") {
-            +(state.value ?:"")
-            attrs.onClickFunction = onClick
+            +(props.squares.toString())
+            attrs.onClickFunction = props.onClick
         }
     }
 }
 
-fun RBuilder.square(square: Char) = child(Square::class) {
+fun RBuilder.square(square: Char, onClick: (Event) -> Unit) = child(Square::class) {
     attrs.squares = square
+    attrs.onClick = onClick
 }
