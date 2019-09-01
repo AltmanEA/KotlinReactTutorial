@@ -8,7 +8,7 @@ import react.dom.button
 class Square():RComponent<Square.Props, Square.State>() {
 
     interface Props: RProps {
-        var squares:String?
+        var squares:Char
     }
     interface State: RState {
         var value:String?
@@ -28,6 +28,6 @@ class Square():RComponent<Square.Props, Square.State>() {
     }
 }
 
-fun RBuilder.square(square: String?) = child(Square::class) {
+fun RBuilder.square(square: Char) = child(Square::class) {
     attrs.squares = square
 }

@@ -6,10 +6,19 @@ import react.RProps
 import react.RState
 import react.dom.div
 
-class Board: RComponent<RProps, RState>() {
+class Board: RComponent<RProps, Board.State>() {
+
+    init {
+        state.squares = Array(9){' '}
+    }
+
+    interface State:RState{
+        var squares: Array<Char>
+    }
+
     val status = "Next player: X"
     fun RBuilder.renderSquare(i: Int) {
-        square(i.toString())
+        square(state.squares[i])
     }
 
     override fun RBuilder.render() {
